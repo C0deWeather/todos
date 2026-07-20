@@ -1,11 +1,11 @@
+import { ValidationError } from './errors.js';
+import { isDuplicate } from './utils.js';
+
 const tasks = [];
 let taskID = 0;
 
 export function addTask(task) {
-  if (tasks.some(t => t.title === task.title)) {
-    throw new ValidationError("task already exists");
-  }
-  
+  isDuplicate(tasks, task.title);
   taskID++;
   tasks.push({
     id: taskID,
