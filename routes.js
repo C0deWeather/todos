@@ -1,5 +1,5 @@
 import express from 'express';
-import { ValidationError, NotFoundError } from 'errors.js';
+import { ValidationError, NotFoundError } from './errors.js';
 
 const router = express.Router();
 
