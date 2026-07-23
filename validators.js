@@ -1,13 +1,7 @@
 import { ValidationError } from './errors.js';
 
 export function validateTask(task) {
-	let { id, title, status } = task;
-
-	if (id) {
-		if (!Number.isInteger(id) || id <= 0) {
-			throw new ValidationError("invalid id");
-		}
-	}
+	let { title, status } = task;
 	
 	if (typeof title !== "string" || typeof status !== "string") {
 		throw new ValidationError("invalid fields");
@@ -24,7 +18,7 @@ export function validateTask(task) {
 		throw new ValidationError("invalid status value");
 	}
 
-	return { id, title, status };
+	return { title, status };
 }
 
 export function validateId(id) {
