@@ -2,16 +2,13 @@ import { ValidationError } from './errors.js';
 import { isDuplicate } from './validators.js';
 
 const tasks = [];
-let taskID = 0;
+const nextId = 1;
 
 export function addTask(task) {
-  isDuplicate(tasks, task.title);
-  taskID++;
   tasks.push({
-    id: taskID,
+    id: nextId++,
     ...task
-  });
-  return taskID;  
+  });  
 }
 
 export function getTasks() {
