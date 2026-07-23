@@ -1,5 +1,4 @@
 import { ValidationError } from './errors.js';
-import { isDuplicate } from './validators.js';
 
 const tasks = [];
 const nextId = 1;
