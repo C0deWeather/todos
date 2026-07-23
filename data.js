@@ -1,16 +1,21 @@
-import { ValidationError } from './errors.js';
+import { NotFoundError, ValidationError } from './errors.js';
 
 const tasks = [];
-const nextId = 1;
+let nextId = 1;
 
 export function addTask(task) {
-  tasks.push({
+  if (tasks.some(t => t.title === task.title)) {
+    throw new ValidationError("task with this title already exists");
+  }
+  const newTask = {
     id: nextId++,
     ...task
-  });  
+  };
+  tasks.push(newTask);
+  return newTask;
 }
 
-export function getTasks() {
+export function getAllTasks() {
   return structuredClone(tasks);
 }
 
@@ -20,6 +25,7 @@ export function getTaskById(id) {
     throw new NotFoundError("task not found");
   }
   return task;
+}
 
 export function updateTask(id, updatedTask) {
   const currentTask = tasks.find(t => t.id === id);
@@ -28,11 +34,12 @@ export function updateTask(id, updatedTask) {
   }
   currentTask.title = updatedTask.title;
   currentTask.status = updatedTask.status;
+  return currentTask;
 }
 
 export function deleteTask(id) {
-  indexInArray = tasks.findIndex(t => t.id === id);
-  if (!indexInArray) {
+  const indexInArray = tasks.findIndex(t => t.id === id);
+  if (indexInArray === -1) {
     throw new NotFoundError("task not found");
   }
   tasks.splice(indexInArray, 1);

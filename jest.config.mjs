@@ -195,6 +195,8 @@ const config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  verbose: true
 };
 
 export default config;

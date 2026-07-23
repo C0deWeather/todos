@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import { ValidationError } from './errors.js';
-=======
-import { ValidationError } from './error.js';
->>>>>>> Stashed changes
 
 export function validateTask(task) {
 	let { id, title, status } = task;
@@ -34,7 +30,7 @@ export function validateTask(task) {
 export function validateId(id) {
 	const validId = Number(id);
 
-	if (!Number.isInteger(ValidId) || id <= 0) {
+	if (!Number.isInteger(validId) || validId <= 0) {
 		throw new ValidationError("invalid id");
 	}
 	return validId;

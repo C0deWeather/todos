@@ -1,20 +1,33 @@
-import { isDuplicate, validateTask } from '../validators.js';
-import { ValidationError } from '../error.js';
+import { validateId, validateTask } from '../validators.js';
+import { ValidationError } from '../errors.js';
 
-describe('isDuplicate()', () => {
-    test('should throw ValidationError if task title already exists', () => {
-        const existingTasks = [{ title: 'Task 1', status: 'pending' }];
-        const newTask = { title: 'Task 1', status: 'completed' };
-        expect(() => isDuplicate(existingTasks, newTask.title))
-        .toThrow(ValidationError);
+describe('validateId()', () => {
+    test('should throw ValidationError if id is not a number', () => {
+        expect(() => validateId('abc')).toThrow(ValidationError);
     });
-    
-    test('should not throw ValidationError if task title does not exist', () => {
-        const existingTasks = [{ title: 'Task 1', status: 'pending' }];
-        const newTask = { title: 'Task 2', status: 'completed' };
-        expect(isDuplicate(existingTasks, newTask.title)).toBeUndefined();
+
+    test('should throw ValidationError if id is a partial number', () => {
+        expect(() => validateId('abc123')).toThrow(ValidationError);
+        expect(() => validateId('1  9 ')).toThrow(ValidationError);
     });
-});
+
+    test('should throw ValidationError if id is not an integer', () => {
+        expect(() => validateId(1.5)).toThrow(ValidationError);
+    });
+
+    test('should throw ValidationError if id is less than or equal to 0', () => {
+        expect(() => validateId(-1)).toThrow(ValidationError);
+        expect(() => validateId(0)).toThrow(ValidationError);
+        expect(() => validateId('-5')).toThrow(ValidationError);
+        expect(() => validateId('0')).toThrow(ValidationError);
+    });
+
+    test('should return the valid id if id is a positive integer', () => {
+        expect(validateId(5)).toBe(5);
+        expect(validateId('10')).toBe(10);
+        expect(validateId('  15  ')).toBe(15);
+    });
+})
 
 describe('validateTask()', () => {
     test('should throw ValidationError if title is not a string', () => {
@@ -47,12 +60,14 @@ describe('validateTask()', () => {
         expect(() => validateTask(task)).toThrow(ValidationError);
     });
 
-    test(`should throw ValidationError if both title and status
-        are empty or only whitespace`, () => {
+    test(
+    'should throw ValidationError if both title and status ' +
+    'are empty or only whitespace',
+    () => {
         const task = { title: '  ', status: '  ' };
         expect(() => validateTask(task)).toThrow(ValidationError);
-    });
-
+    }
+);
     test('should throw ValidationError if status is invalid', () => {
         const task = { title: 'Task 1', status: 'in progress' };
         expect(() => validateTask(task)).toThrow(ValidationError);
