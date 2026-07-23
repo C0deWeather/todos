@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Coverage reports
+coverage/
+
+# nvim swap files
+*.swp
+*.swo
+
+# editor settings
+*.vscode
+
+# package manager cache
+*.npm
+

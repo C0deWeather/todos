@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { ValidationError } from './errors.js';
+=======
+import { ValidationError } from './error.js';
+>>>>>>> Stashed changes
 
 export function validateTask(task) {
 	let { id, title, status } = task;
