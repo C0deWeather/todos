@@ -1,13 +1,13 @@
 import { ValidationError } from './errors.js';
 
-export function isDuplicate(tasks, title) {
-	if (tasks.some(t => t.title === title)) {
-		throw new ValidationError("task already exists", 422);
-	}
-}
-
 export function validateTask(task) {
-	let { title, status } = task;
+	let { id, title, status } = task;
+
+	if (id) {
+		if (!Number.isInteger(id) || id <= 0) {
+			throw new ValidationError("invalid id");
+		}
+	}
 	
 	if (typeof title !== "string" || typeof status !== "string") {
 		throw new ValidationError("invalid fields");
@@ -16,25 +16,22 @@ export function validateTask(task) {
 	title = title.toLowerCase().trim();
 	status = status.toLowerCase().trim();
 
-	if (!title) {
-		throw new ValidationError("title cannot be empty");
+	if (!title || !status) {
+		throw new ValidationError("one or more fields are empty");
 	}
-	if (!status) {
-		throw new ValidationError("status cannot be empty");
-	}
-
+	
 	if (status !== 'pending' && status !== 'completed') {
 		throw new ValidationError("invalid status value");
 	}
 
-	return { title, status };
+	return { id, title, status };
 }
 
-export function validateID(id) {
-	const validID = parseInt(id);
+export function validateId(id) {
+	const validId = Number(id);
 
-	if (isNaN(validID) || validID <= 0) {
+	if (!Number.isInteger(ValidId) || id <= 0) {
 		throw new ValidationError("invalid id");
 	}
-	return validID;
+	return validId;
 }
